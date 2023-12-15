@@ -4,22 +4,19 @@ import os
 
 if __name__ == '__main__':
     app = Flask(__name__)
+    api = Api(app, version='1.0', title='API 문서', description='Swagger 문서', doc='/api-docs')
 
-    api = Api(app, version='1.0', title='API 문서', description='Swagger 문서', doc="/api-docs")
-
-    test_api = api.namespace('test', description='조회 API')
+    test_api = api.namespace('test', description='Test API') # 콜 받는 주소
+    data = api.namespace('getdata', description='데이터 get API')
 
     @test_api.route('/')
     class Test(Resource):
         def get(self):
-            return 'Hello World!'
+            return "Hello World. This is Test."
+    
+    @data.route('/')
+    class GetData(Resource):
+        def get(self):
+            pass
 
-  
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 8888)), debug=True)
-
-    @app.after_request
-    def set_response_headers(r):
-        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        r.headers['Pragma'] = 'no-cache'
-        r.headers['Expires'] = '0'
-        return r
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 9999)), debug=True)
