@@ -23,6 +23,5 @@ def getdata(s, e):
     print(type(df))
     df_to_json = df.to_json()
     with open('temp.txt', 'w') as f:
-        f.write(df_to_json)
-        
+        f.write(df_to_json)  
     return jsonify(df_to_json)

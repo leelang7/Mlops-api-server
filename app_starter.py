@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_restx import Api, Resource, reqparse
 import os
 import data_from_yf
+from project.test import maria_test
 
 if __name__ == '__main__':
     app = Flask(__name__)
@@ -9,6 +10,7 @@ if __name__ == '__main__':
 
     test_api = api.namespace('test', description='Test API') # 콜 받는 주소
     data = api.namespace('getdata', description='데이터 get API')
+    data_from_db = api.namespace('datafromdb', description='DB get API')
 
     @test_api.route('/')
     class Test(Resource):
@@ -22,5 +24,13 @@ if __name__ == '__main__':
             e = request.args.get('e',1,str)
             print(s, e, type(s))
             return data_from_yf.getdata(s, e)
+        
+    @data_from_db.route('/')
+    class DataFromDB(Resource):
+        def get(self):
+            s = request.args.get('s',1,str)
+            e = request.args.get('e',1,str)
+            print(s, e, type(s))
+            return maria_test.getdata_from_db(s, e)
 
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 9999)), debug=True)
