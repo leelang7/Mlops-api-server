@@ -4,6 +4,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from project.common.single_instance import SingletonInstance
 from sqlalchemy import create_engine
 from project.constants.default_constants import DefaultConstants
+import pandas as pd
 
 
 class MariaDataService(SingletonInstance):

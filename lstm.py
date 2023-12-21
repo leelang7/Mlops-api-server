@@ -4,10 +4,20 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import LSTM, Dropout, Dense, Activation
 import datetime
-import api_test
+import api_test_db
 
+# This is external data collection test
+'''
 data = api_test.df
 data.head()
+'''
+
+# This is DB test
+start = api_test_db.DBtest() # start 
+print(start, type(start))
+df = pd.read_csv('data_from_db.csv')
+data = pd.DataFrame(df)
+print(data.head())
 
 # Compute mid price
 high_prices = data['High'].values
