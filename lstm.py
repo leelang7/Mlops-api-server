@@ -11,7 +11,6 @@ import api_test_db
 data = api_test.df
 data.head()
 '''
-
 # This is DB test
 start = api_test_db.DBtest() # start 
 print(start, type(start))
