@@ -12,6 +12,7 @@ if __name__ == '__main__':
     test_api = api.namespace('test', description='Test API') # 콜 받는 주소
     data = api.namespace('getdata', description='데이터 get API')
     data_from_db = api.namespace('getdatafromdb', description='Getiing data from DB API')
+    external_data_col = api.namespace('extdatacol', description='External data collection API')
 
     @test_api.route('/')
     class Test(Resource):
@@ -33,5 +34,13 @@ if __name__ == '__main__':
             e = request.args.get('e',1,str)
             print(s, e, type(s))
             return getdata_from_db.getdata_from_db(s, e)
-
+        
+    @external_data_col.route('/')
+    class ExternalDataCollection(Resource):
+        def get(self):
+            s = request.args.get('s',1,str)
+            e = request.args.get('e',1,str)
+            print(s, e, type(s))
+            return data_from_yf.getdata(s, e)
+            
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 9999)), debug=True)
