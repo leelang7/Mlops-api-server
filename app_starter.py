@@ -4,6 +4,7 @@ import os
 import data_from_yf
 from project.test import maria_test
 import getdata_from_db
+from datetime import datetime
 
 if __name__ == '__main__':
     app = Flask(__name__)
@@ -30,10 +31,16 @@ if __name__ == '__main__':
     @data_from_db.route('/')
     class GetDataFromDB(Resource):
         def get(self):
-            s = request.args.get('s',1,str)
-            e = request.args.get('e',1,str)
-            print(s, e, type(s))
-            return getdata_from_db.getdata_from_db(s, e)
+            s = request.args.get('s', default='2024-01-01',type=str)
+            e = request.args.get('e', default='2024-12-31',type=str)
+            #print(s, e, type(s))
+
+            start_date = datetime.strptime(s, '%Y-%m-%d')
+            end_date = datetime.strptime(e, '%Y-%m-%d')
+
+            print(start_date, end_date, type(start_date))
+            return data_from_yf.getdata(start_date, end_date)
+            #return getdata_from_db.getdata_from_db(s, e)
         
     @external_data_col.route('/')
     class ExternalDataCollection(Resource):
