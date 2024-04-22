@@ -23,31 +23,40 @@ if __name__ == '__main__':
     @data.route('/')
     class GetData(Resource):
         def get(self):
-            s = request.args.get('s',1,str)
-            e = request.args.get('e',1,str)
+            s = request.args.get('s', default='2024-01-01',type=str)
+            e = request.args.get('e', default='2024-12-31',type=str)
             print(s, e, type(s))
-            return data_from_yf.getdata(s, e)
+                    # Convert string to datetime
+            start_date = datetime.strptime(s, '%Y-%m-%d')
+            end_date = datetime.strptime(e, '%Y-%m-%d')
+
+            print(start_date, end_date, type(start_date))
+            return data_from_yf.getdata(start_date, end_date)
         
     @data_from_db.route('/')
     class GetDataFromDB(Resource):
         def get(self):
             s = request.args.get('s', default='2024-01-01',type=str)
             e = request.args.get('e', default='2024-12-31',type=str)
-            #print(s, e, type(s))
+            print(s, e, type(s))
+            # Convert string to datetime
+            start_date = datetime.strptime(s, '%Y-%m-%d')
+            end_date = datetime.strptime(e, '%Y-%m-%d')
 
+            print(start_date, end_date, type(start_date))
+            return getdata_from_db.getdata_from_db(start_date, end_date)
+        
+    @external_data_col.route('/')
+    class ExternalDataCollection(Resource):
+        def get(self):
+            s = request.args.get('s', default='2024-01-01',type=str)
+            e = request.args.get('e', default='2024-12-31',type=str)
+            print(s, e, type(s))
+                    # Convert string to datetime
             start_date = datetime.strptime(s, '%Y-%m-%d')
             end_date = datetime.strptime(e, '%Y-%m-%d')
 
             print(start_date, end_date, type(start_date))
             return data_from_yf.getdata(start_date, end_date)
-            #return getdata_from_db.getdata_from_db(s, e)
-        
-    @external_data_col.route('/')
-    class ExternalDataCollection(Resource):
-        def get(self):
-            s = request.args.get('s',1,str)
-            e = request.args.get('e',1,str)
-            print(s, e, type(s))
-            return data_from_yf.getdata(s, e)
             
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 9999)), debug=True)
