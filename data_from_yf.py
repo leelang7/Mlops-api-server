@@ -35,3 +35,7 @@ def getdata(s, e, stocks):
     df.to_csv(filename, index=True, header=False)
         
     return jsonify(df_to_json)
+
+
+
+

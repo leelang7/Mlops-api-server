@@ -25,13 +25,14 @@ if __name__ == '__main__':
         def get(self):
             s = request.args.get('s', default='2024-01-01',type=str)
             e = request.args.get('e', default='2024-12-31',type=str)
+            stocks = request.args.get('stocks', type=str)
             print(s, e, type(s))
-                    # Convert string to datetime
+            # Convert string to datetime
             start_date = datetime.strptime(s, '%Y-%m-%d')
             end_date = datetime.strptime(e, '%Y-%m-%d')
 
             print(start_date, end_date, type(start_date))
-            return data_from_yf.getdata(start_date, end_date)
+            return data_from_yf.getdata(start_date, end_date, stocks)
         
     @data_from_db.route('/')
     class GetDataFromDB(Resource):

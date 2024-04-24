@@ -12,9 +12,9 @@ data = api_test.df
 data.head()
 '''
 # This is DB test
-start = api_test_db.DBtest() # start 
-print(start, type(start))
-df = pd.read_csv('data_from_db.csv')
+#start = api_test_db.DBtest() # start 
+#print(start, type(start))
+df = pd.read_csv(f"db_to_df/data_from_db.csv")
 data = pd.DataFrame(df)
 print(data.head())
 
@@ -70,7 +70,7 @@ model.fit(x_train, y_train,
 
 # Model save
 filename = datetime.datetime.now().strftime("%Y%m%d_%H%m%S")
-model.save(filename + '_my_model.h5')
+model.save("models/" + filename + '_my_model.h5')
 
 # Predict
 pred = model.predict(x_test)
@@ -79,5 +79,7 @@ ax = fig.add_subplot(111)
 ax.plot(y_test, label='True')
 ax.plot(pred, label='Prediction')
 ax.legend()
-plt.savefig(filename + '_result.jpg', format='jpeg')
+ax.set_xlabel('Time')
+ax.set_ylabel('Normalized Mid Price')
+plt.savefig("results/" + filename + '_result.jpg', format='jpeg')
 plt.show()

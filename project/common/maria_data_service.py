@@ -3,8 +3,7 @@ sys.path.append('.')
 from sqlalchemy.orm import scoped_session, sessionmaker
 from project.common.single_instance import SingletonInstance
 from sqlalchemy import create_engine
-from project.constants.default_constants import DefaultConstants
-import pandas as pd
+#from project.constants.default_constants import DefaultConstants
 
 
 class MariaDataService(SingletonInstance):
@@ -19,7 +18,7 @@ class MariaDataService(SingletonInstance):
                                 echo=None                                )
         '''
         # 운영
-        self.engine = create_engine('mysql://root:1436@localhost:3306/samsung',
+        self.engine = create_engine('mysql://root:''@localhost:3306/samsung',
                                     pool_recycle=100,
                                     pool_size=500,
                                     max_overflow=100,
