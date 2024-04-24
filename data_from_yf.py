@@ -7,7 +7,7 @@ import yfinance as yf
 from flask import jsonify
 yf.pdr_override()
 
-def getdata(s, e):
+def getdata(s, e, stocks):
     dic = dict()
     '''
     y = s[0:4]
@@ -24,9 +24,14 @@ def getdata(s, e):
     print(type(df))
     '''
     filename = datetime.now().strftime("%Y%m%d_%H%m%S")
-    df = pdr.get_data_yahoo('005930.KS', s, e)
+    df = pdr.get_data_yahoo(stocks, s, e)
     df_to_json = df.to_json()
     with open('temp.csv', 'w') as f:
         f.write(df_to_json)
+
+    # Assuming df is your DataFrame
+    now = datetime.now().strftime("%Y_%m%d_%H%M%S")
+    filename = f"collect_files/df_{now}.csv"
+    df.to_csv(filename, index=True)
         
     return jsonify(df_to_json)
