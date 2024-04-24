@@ -32,6 +32,6 @@ def getdata(s, e, stocks):
     # Assuming df is your DataFrame
     now = datetime.now().strftime("%Y_%m%d_%H%M%S")
     filename = f"collect_files/df_{now}.csv"
-    df.to_csv(filename, index=True)
+    df.to_csv(filename, index=True, header=False)
         
     return jsonify(df_to_json)
