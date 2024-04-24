@@ -2,13 +2,14 @@ import os
 import pymysql
 import pandas as pd
 import csv
+from datetime import datetime
 
 def getdata_from_db(s, e):
     # Server connection 
     conn = pymysql.connect( 
         host='localhost',
         user='root',
-        password='1436',
+        password='',
         db='samsung',
         charset='utf8mb4',
         cursorclass=pymysql.cursors.DictCursor
@@ -27,7 +28,9 @@ def getdata_from_db(s, e):
             df = pd.DataFrame(result)
             # Print DataFrame
             #print(df)
-            df.to_csv('data_from_db.csv', index=False)
+            now = datetime.now().strftime("%Y_%m%d_%H%M%S")
+            df.to_csv(f"db_to_df/df_to_db_{now}.csv", index=False)
+
     finally:
         # Close connection
         conn.close()
@@ -35,13 +38,13 @@ def getdata_from_db(s, e):
     return result # df에서 -> result로 수정함
 
 def insert_data():
-    conn = pymysql.connect(host='127.0.0.1', user='root', password='1436', 
+    conn = pymysql.connect(host='127.0.0.1', user='root', password='', 
                            db='samsung', charset='utf8')
     curs = conn.cursor()
     conn.commit()
     
     #####
-    files_Path = 'C:\\Users\\leesc\\PycharmProjects\\Mlops-api-server\\collect_files\\' # 파일들이 들어있는 폴더
+    files_Path = 'C:\\Users\\admin\\LSC\\Mlops\\collect_files\\' # 파일들이 들어있는 폴더
     file_name_and_time_lst = []
     # 해당 경로에 있는 파일들의 생성시간을 함께 리스트로 넣어줌. 
     for f_name in os.listdir(f"{files_Path}"):
@@ -67,7 +70,7 @@ def insert_data():
     print(last_path)
     # 'C:\\Users\\leesc\\PycharmProjects\\Mlops-api-server\collect_files\\data_from_db.csv'
     '''
-    folder_path = r'C:\\Users\\leesc\\PycharmProjects\\Mlops-api-server\\collect_files\\'
+    folder_path = r'C:\\Users\\admin\\LSC\\Mlops\\collect_files\\'
     f = open(folder_path + recent_file_name)
     csvReader = csv.reader(f)
 
@@ -80,9 +83,11 @@ def insert_data():
         Close = (row[4])
         AdjClose = (row[5])
         Volume = (row[6])
-        sql = "insert into samsung.testDB2 (Date, Open, High, Low, Close, AdjClose, Volume) values (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "insert into samsung.testDB (Date, Open, High, Low, Close, AdjClose, Volume) values (%s, %s, %s, %s, %s, %s, %s)"
         val = (Date, Open, High, Low, Close, AdjClose, Volume)
         curs.execute(sql, val)
+        print('Insert completed')
+
     conn.commit()
     f.close()
     conn.close()
